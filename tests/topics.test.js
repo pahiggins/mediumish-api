@@ -95,6 +95,7 @@ describe('/api/articles', () => {
     const response = await request(app).get('/api/articles');
     expect(response.status).toEqual(200);
     expect(response.body).toHaveLength(10);
+    expect(response.body[0]).toHaveProperty('comment_count', '13');
     expect(response.type).toEqual('application/json');
   });
 
