@@ -37,5 +37,46 @@ describe('/api/topics', () => {
       expect(response.body[0]).toHaveProperty('title', 'UNCOVERED: catspiracy to bring down democracy');
       expect(response.body[0]).toHaveProperty('comment_count', '2');
     });
+
+    describe('?limit', () => {
+      test('GET responds with status 200 and array of articles for a topic using limit query', async () => {
+        const response = await request(app).get('/api/topics/mitch/articles?limit=3');
+        expect(response.status).toEqual(200);
+        expect(response.body).toHaveLength(3);
+      });
+    });
+
+    describe('?sort_by', () => {
+      test('GET responds with status 200 and array of articles for a topic using sort_by query', async () => {
+        const response = await request(app).get('/api/topics/mitch/articles?sort_by=article_id');
+        expect(response.status).toEqual(200);
+        expect(response.body[0]).toHaveProperty('article_id', 12);
+      });
+    });
+
+    describe('?p', () => {
+      test('GET responds with status 200 and array of articles for a topic using p query', async () => {
+        const response = await request(app).get('/api/topics/mitch/articles?p=1');
+        expect(response.status).toEqual(200);
+        expect(response.body).toHaveLength(1);
+      });
+    });
+
+    describe('?sort_ascending', () => {
+      test('GET responds with status 200 and array of articles for a topic using sort_ascending query', async () => {
+        const response = await request(app).get('/api/topics/mitch/articles?sort_ascending=true');
+        expect(response.status).toEqual(200);
+        expect(response.body[0]).toHaveProperty('article_id', 12);
+      });
+    });
+
+    describe('?limit&&sort_by&&p&&sort_ascending', () => {
+      test('GET responds with status 200 and array of articles for a topic using multiple queries', async () => {
+        const response = await request(app).get('/api/topics/mitch/articles?limit=3&&sort_by=article_id');
+        expect(response.status).toEqual(200);
+        expect(response.body).toHaveLength(3);
+        expect(response.body[0]).toHaveProperty('title', 'Moustache');
+      });
+    });
   });
 });
