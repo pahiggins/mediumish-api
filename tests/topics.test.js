@@ -35,6 +35,7 @@ describe('/api/topics', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0]).toHaveProperty('title', 'UNCOVERED: catspiracy to bring down democracy');
+      expect(response.body[0]).toHaveProperty('comment_count', '2');
     });
   });
 });
