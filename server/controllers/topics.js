@@ -1,5 +1,4 @@
 const connection = require('../../db/connection');
-const CustomError = require('../CustomError');
 
 exports.getTopics = (req, res, next) => connection('topics')
   .select('*')
@@ -8,14 +7,14 @@ exports.getTopics = (req, res, next) => connection('topics')
 
 exports.addTopic = (req, res, next) => {
   const newTopic = {
-    slug: req.body.slug,
-    description: req.body.description || '',
+    slug: req.body.slug.trim(),
+    description: req.body.description.trim() || '',
   };
 
   return connection('topics')
     .insert(newTopic)
     .returning(['slug', 'description'])
-    .then(createdTopic => res.status(201).send(createdTopic))
+    .then(addedTopic => res.status(201).send(addedTopic))
     .catch(next);
 };
 
@@ -54,5 +53,19 @@ exports.getArticlesByTopic = (req, res, next) => {
       'comments.article_id',
     )
     .then(matchingArticles => res.status(200).send(matchingArticles))
+    .catch(next);
+};
+
+exports.addArticleByTopic = (req, res, next) => {
+  const newArticle = {
+    title: req.body.title.trim(),
+    body: req.body.body.trim() || '',
+    username: req.body.username.trim(),
+  };
+
+  return connection('articles')
+    .insert(newArticle)
+    .returning('*')
+    .then(addedArticle => res.status(201).send(addedArticle))
     .catch(next);
 };

@@ -1,7 +1,9 @@
 const api = require('express').Router();
 const topics = require('./topics');
+const articles = require('./articles');
 
 api.use('/topics', topics);
+api.use('/articles', articles);
 
 // /* eslint-disable global-require */
 // const router = require('express').Router();
