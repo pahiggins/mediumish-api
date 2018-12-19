@@ -93,6 +93,12 @@ exports.deleteArticle = (req, res, next) => {
 
 exports.getCommentsByArticle = (req, res, next) => {
   const { article_id } = req.params;
+  const {
+    limit = 10,
+    sort_by = 'created_at',
+    p = 0,
+    sort_ascending = false,
+  } = req.query;
 
   return connection
     .select(
@@ -103,6 +109,9 @@ exports.getCommentsByArticle = (req, res, next) => {
       'comments.body',
     )
     .where('comments.article_id', '=', article_id)
+    .limit(limit)
+    .offset(p * limit)
+    .orderBy((`comments.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .from('comments')
     .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .then(matchingComments => res.status(200).send(matchingComments))

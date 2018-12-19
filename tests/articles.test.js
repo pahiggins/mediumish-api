@@ -49,9 +49,50 @@ module.exports = () => {
         test('GET responds with status 200 and array of comments for article', async () => {
           const response = await request(app).get('/api/articles/1/comments');
           expect(response.status).toEqual(200);
-          expect(response.body).toHaveLength(13);
+          expect(response.body).toHaveLength(10);
           expect(response.body[0]).toHaveProperty('comment_id', 2);
           expect(response.type).toEqual('application/json');
+        });
+
+        describe('?limit', () => {
+          test('GET responds with status 200 and array of comments for an article using limit query', async () => {
+            const response = await request(app).get('/api/articles/1/comments?limit=3');
+            expect(response.status).toEqual(200);
+            expect(response.body).toHaveLength(3);
+          });
+        });
+
+        describe('?sort_by', () => {
+          test('GET responds with status 200 and array of comments for an article using sort_by query', async () => {
+            const response = await request(app).get('/api/articles/1/comments?sort_by=comment_id');
+            expect(response.status).toEqual(200);
+            expect(response.body[0]).toHaveProperty('comment_id', 18);
+          });
+        });
+
+        describe('?p', () => {
+          test('GET responds with status 200 and array of comments for an article using p query', async () => {
+            const response = await request(app).get('/api/articles/1/comments?p=1');
+            expect(response.status).toEqual(200);
+            expect(response.body).toHaveLength(3);
+          });
+        });
+
+        describe('?sort_ascending', () => {
+          test('GET responds with status 200 and array of comments for an article using sort_ascending query', async () => {
+            const response = await request(app).get('/api/articles/1/comments?sort_ascending=true');
+            expect(response.status).toEqual(200);
+            expect(response.body[0]).toHaveProperty('comment_id', 18);
+          });
+        });
+
+        describe('?limit&&sort_by&&p&&sort_ascending', () => {
+          test('GET responds with status 200 and array of comments for an article using multiple queries', async () => {
+            const response = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
+            expect(response.status).toEqual(200);
+            expect(response.body).toHaveLength(3);
+            expect(response.body[0]).toHaveProperty('title', 'Moustache');
+          });
         });
       });
     });
