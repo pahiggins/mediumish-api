@@ -88,5 +88,5 @@ exports.deleteArticle = (req, res, next) => {
     .where('article_id', '=', article_id)
     .del()
     .then(() => res.status(200).send({}))
-    .catch(err => console.log(err));
+    .catch(next);
 };

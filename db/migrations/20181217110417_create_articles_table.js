@@ -6,8 +6,8 @@ exports.up = function (knex, Promise) {
     articlesTable.string('title');
     articlesTable.text('body');
     articlesTable.integer('votes').defaultTo(0);
-    articlesTable.string('topic').references('topics.slug');
-    articlesTable.string('username').references('users.username');
+    articlesTable.string('topic').references('topics.slug').onDelete('CASCADE');
+    articlesTable.string('username').references('users.username').onDelete('CASCADE');
     articlesTable.timestamp('created_at').defaultTo(knex.fn.now());
   });
 };

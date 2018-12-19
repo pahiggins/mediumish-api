@@ -39,7 +39,7 @@ module.exports = () => {
         expect(response.body).toHaveProperty('votes', 98);
       });
 
-      xtest('DELETE responds with status 200 and empty article object', async () => {
+      test('DELETE responds with status 200 and empty article object', async () => {
         const response = await request(app).delete('/api/articles/1');
         expect(response.status).toEqual(200);
         expect(response.body).toEqual({});
