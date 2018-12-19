@@ -12,6 +12,20 @@ module.exports = () => {
       expect(response.type).toEqual('application/json');
     });
 
+    describe('/:article_id', () => {
+      test('GET responds with status 200 and article object', async () => {
+        const response = await request(app).get('/api/articles/1');
+        expect(response.status).toEqual(200);
+        expect(response.body).toHaveProperty('article_id', 1);
+        expect(response.body).toHaveProperty('author', 'butter_bridge');
+        expect(response.body).toHaveProperty('title', 'Living in the shadow of a great man');
+        expect(response.body).toHaveProperty('votes', 100);
+        expect(response.body).toHaveProperty('body', 'I find this existence challenging');
+        expect(response.body).toHaveProperty('comment_count', '13');
+        expect(response.body).toHaveProperty('topic', 'mitch');
+      });
+    });
+
     describe('?limit', () => {
       test('GET responds with status 200 and array of articles for a topic using limit query', async () => {
         const response = await request(app).get('/api/articles?limit=3');

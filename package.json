@@ -4,7 +4,7 @@
   "description": "## Northcoders News API",
   "main": "server/app.js",
   "scripts": {
-    "test": "jest tests/index.test.js",
+    "test": "jest tests/index.test.js --watch",
     "lint": "eslint ./",
     "pre-commit": "npm t",
     "posttest": "npm run lint",

@@ -2,8 +2,10 @@
 process.env.NODE_ENV = 'test';
 
 const connection = require('../db/connection');
+
 const articlesTests = require('./articles.test');
 const topicsTests = require('./topics.test');
+// const usersTests = require('./users.test');
 
 beforeEach(() => connection.migrate.rollback()
   .then(() => connection.migrate.latest())
@@ -11,5 +13,14 @@ beforeEach(() => connection.migrate.rollback()
 
 afterAll(() => connection.destroy());
 
-articlesTests();
-topicsTests();
+describe('Topics', () => {
+  topicsTests();
+});
+
+describe('Articles', () => {
+  articlesTests();
+});
+
+// describe('Users', () => {
+//   usersTests();
+// });

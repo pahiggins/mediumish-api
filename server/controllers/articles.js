@@ -8,11 +8,6 @@ exports.getArticles = (req, res, next) => {
     sort_ascending = false,
   } = req.query;
 
-  // return connection('articles')
-  //   .select('*')
-  //   .then(allArticles => res.status(200).send(allArticles))
-  //   .catch(next);
-
   return connection
     .select(
       'articles.username AS author',
@@ -26,7 +21,6 @@ exports.getArticles = (req, res, next) => {
     .limit(limit)
     .offset(p * limit)
     .orderBy((`articles.${sort_by}`), sort_ascending ? 'asc' : 'desc')
-    // .where('topic', '=', topic)
     .count('comments.article_id AS comment_count')
     .from('comments')
     .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
@@ -43,3 +37,29 @@ exports.getArticles = (req, res, next) => {
     .then(matchingArticles => res.status(200).send(matchingArticles))
     .catch(next);
 };
+
+exports.getArticle = (req, res, next) => connection
+  .select(
+    'articles.username AS author',
+    'articles.title',
+    'articles.article_id',
+    'articles.body',
+    'articles.votes',
+    'articles.created_at',
+    'articles.topic',
+  )
+  .count('comments.article_id AS comment_count')
+  .from('comments')
+  .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+  .groupBy(
+    'articles.username',
+    'articles.title',
+    'articles.article_id',
+    'articles.body',
+    'articles.votes',
+    'articles.created_at',
+    'articles.topic',
+    'comments.article_id',
+  )
+  .then(([matchingArticles]) => res.status(200).send(matchingArticles))
+  .catch(next);
