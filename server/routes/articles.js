@@ -4,8 +4,10 @@ const {
   getArticle,
   updateArticle,
   deleteArticle,
-  getCommentsByArticle,
-  addCommentToArticle,
+  getComments,
+  addComment,
+  updateComment,
+  deleteComment,
 } = require('../controllers/articles');
 
 articles.get('/', getArticles);
@@ -16,7 +18,11 @@ articles.route('/:article_id')
   .delete(deleteArticle);
 
 articles.route('/:article_id/comments')
-  .get(getCommentsByArticle)
-  .post(addCommentToArticle);
+  .get(getComments)
+  .post(addComment);
+
+articles.route('/:article_id/comments/:comment_id')
+  .patch(updateComment)
+  .delete(deleteComment);
 
 module.exports = articles;

@@ -104,6 +104,22 @@ module.exports = () => {
             expect(response.body[0]).toHaveProperty('title', 'Moustache');
           });
         });
+
+        describe('/comment_id', () => {
+          test('PATCH responds with status 200 and updated comment object with increased votes', async () => {
+            const response = await request(app).patch('/api/articles/1/comments/3').send({ inc_votes: 2 });
+            expect(response.status).toEqual(200);
+            expect(response.body).toHaveProperty('comment_id', 3);
+            expect(response.body).toHaveProperty('votes', 102);
+          });
+
+          test('PATCH responds with status 200 and updated comment object with decreased votes', async () => {
+            const response = await request(app).patch('/api/articles/1/comments/3').send({ inc_votes: -2 });
+            expect(response.status).toEqual(200);
+            expect(response.body).toHaveProperty('comment_id', 3);
+            expect(response.body).toHaveProperty('votes', 98);
+          });
+        });
       });
     });
 

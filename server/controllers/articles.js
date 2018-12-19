@@ -91,7 +91,7 @@ exports.deleteArticle = (req, res, next) => {
     .catch(next);
 };
 
-exports.getCommentsByArticle = (req, res, next) => {
+exports.getComments = (req, res, next) => {
   const { article_id } = req.params;
   const {
     limit = 10,
@@ -118,7 +118,7 @@ exports.getCommentsByArticle = (req, res, next) => {
     .catch(next);
 };
 
-exports.addCommentToArticle = (req, res, next) => {
+exports.addComment = (req, res, next) => {
   const { article_id } = req.params;
   const newComment = {
     username: req.body.username.trim(),
@@ -131,4 +131,20 @@ exports.addCommentToArticle = (req, res, next) => {
     .returning('*')
     .then(([addedComment]) => res.status(201).send(addedComment))
     .catch(next);
+};
+
+exports.updateComment = (req, res, next) => {
+  const { comment_id } = req.params;
+  const { inc_votes } = req.body;
+
+  return connection('comments')
+    .where('comment_id', '=', comment_id)
+    .increment('votes', inc_votes)
+    .returning('*')
+    .then(([updatedComment]) => res.status(200).send(updatedComment))
+    .catch(next);
+};
+
+exports.deleteComment = (req, res, next) => {
+
 };
