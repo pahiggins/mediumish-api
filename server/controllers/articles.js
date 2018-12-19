@@ -117,3 +117,18 @@ exports.getCommentsByArticle = (req, res, next) => {
     .then(matchingComments => res.status(200).send(matchingComments))
     .catch(next);
 };
+
+exports.addCommentToArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  const newComment = {
+    username: req.body.username.trim(),
+    body: req.body.body.trim() || '',
+    article_id,
+  };
+
+  return connection('comments')
+    .insert(newComment)
+    .returning('*')
+    .then(([addedComment]) => res.status(201).send(addedComment))
+    .catch(next);
+};

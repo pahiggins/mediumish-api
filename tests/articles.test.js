@@ -54,6 +54,16 @@ module.exports = () => {
           expect(response.type).toEqual('application/json');
         });
 
+        test('POST responds with status 201 and added comment', async () => {
+          const comment = { username: 'butter_bridge', body: 'Sample comment...' };
+          const response = await request(app).post('/api/articles/1/comments').send(comment);
+          expect(response.status).toEqual(201);
+          expect(response.body).toHaveProperty('username', comment.username);
+          expect(response.body).toHaveProperty('body', comment.body);
+          expect(response.body).toHaveProperty('comment_id', 19);
+          expect(response.type).toEqual('application/json');
+        });
+
         describe('?limit', () => {
           test('GET responds with status 200 and array of comments for an article using limit query', async () => {
             const response = await request(app).get('/api/articles/1/comments?limit=3');
