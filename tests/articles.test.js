@@ -29,24 +29,20 @@ module.exports = () => {
         const response = await request(app).patch('/api/articles/1').send({ inc_votes: 2 });
         expect(response.status).toEqual(200);
         expect(response.body).toHaveProperty('article_id', 1);
-        expect(response.body).toHaveProperty('author', 'butter_bridge');
-        expect(response.body).toHaveProperty('title', 'Living in the shadow of a great man');
         expect(response.body).toHaveProperty('votes', 102);
-        expect(response.body).toHaveProperty('body', 'I find this existence challenging');
-        expect(response.body).toHaveProperty('comment_count', '13');
-        expect(response.body).toHaveProperty('topic', 'mitch');
       });
 
       test('PATCH responds with status 200 and updated article object with decreased votes', async () => {
         const response = await request(app).patch('/api/articles/1').send({ inc_votes: -2 });
         expect(response.status).toEqual(200);
         expect(response.body).toHaveProperty('article_id', 1);
-        expect(response.body).toHaveProperty('author', 'butter_bridge');
-        expect(response.body).toHaveProperty('title', 'Living in the shadow of a great man');
         expect(response.body).toHaveProperty('votes', 98);
-        expect(response.body).toHaveProperty('body', 'I find this existence challenging');
-        expect(response.body).toHaveProperty('comment_count', '13');
-        expect(response.body).toHaveProperty('topic', 'mitch');
+      });
+
+      xtest('DELETE responds with status 200 and empty article object', async () => {
+        const response = await request(app).delete('/api/articles/1');
+        expect(response.status).toEqual(200);
+        expect(response.body).toEqual({});
       });
     });
 

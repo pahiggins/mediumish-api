@@ -3,10 +3,13 @@ const {
   getArticles,
   getArticle,
   updateArticle,
+  deleteArticle,
 } = require('../controllers/articles');
 
 articles.get('/', getArticles);
-articles.get('/:article_id', getArticle);
-articles.patch('/:article_id', updateArticle);
+articles.route('/:article_id')
+  .get(getArticle)
+  .patch(updateArticle)
+  .delete(deleteArticle);
 
 module.exports = articles;
