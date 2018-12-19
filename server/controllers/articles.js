@@ -38,28 +38,73 @@ exports.getArticles = (req, res, next) => {
     .catch(next);
 };
 
-exports.getArticle = (req, res, next) => connection
-  .select(
-    'articles.username AS author',
-    'articles.title',
-    'articles.article_id',
-    'articles.body',
-    'articles.votes',
-    'articles.created_at',
-    'articles.topic',
-  )
-  .count('comments.article_id AS comment_count')
-  .from('comments')
-  .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
-  .groupBy(
-    'articles.username',
-    'articles.title',
-    'articles.article_id',
-    'articles.body',
-    'articles.votes',
-    'articles.created_at',
-    'articles.topic',
-    'comments.article_id',
-  )
-  .then(([matchingArticles]) => res.status(200).send(matchingArticles))
-  .catch(next);
+exports.getArticle = (req, res, next) => {
+  const { article_id } = req.params;
+
+  return connection
+    .select(
+      'articles.username AS author',
+      'articles.title',
+      'articles.article_id',
+      'articles.body',
+      'articles.votes',
+      'articles.created_at',
+      'articles.topic',
+    )
+    .where('articles.article_id', '=', article_id)
+    .count('comments.article_id AS comment_count')
+    .from('comments')
+    .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .groupBy(
+      'articles.username',
+      'articles.title',
+      'articles.article_id',
+      'articles.body',
+      'articles.votes',
+      'articles.created_at',
+      'articles.topic',
+      'comments.article_id',
+    )
+    .then(([matchingArticles]) => res.status(200).send(matchingArticles))
+    .catch(next);
+};
+
+// TODO: Refactor to use one call to the db.
+exports.updateArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
+
+  return connection('articles')
+    .where('article_id', '=', article_id)
+    .increment('votes', inc_votes)
+    .returning('article_id')
+    .then(id => connection
+      .select(
+        'articles.username AS author',
+        'articles.title',
+        'articles.article_id',
+        'articles.body',
+        'articles.votes',
+        'articles.created_at',
+        'articles.topic',
+      )
+      .where('articles.article_id', '=', Number(id))
+      .count('comments.article_id AS comment_count')
+      .from('comments')
+      .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+
+      .groupBy(
+        'articles.username',
+        'articles.title',
+        'articles.article_id',
+        'articles.body',
+        'articles.votes',
+        'articles.created_at',
+        'articles.topic',
+        'comments.article_id',
+      )
+      .returning('*')
+      .then(([updatedArticle]) => res.status(200).send(updatedArticle))
+      .catch(err => console.log(err)))
+    .catch(next);
+};
