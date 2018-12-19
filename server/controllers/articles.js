@@ -90,3 +90,21 @@ exports.deleteArticle = (req, res, next) => {
     .then(() => res.status(200).send({}))
     .catch(next);
 };
+
+exports.getCommentsByArticle = (req, res, next) => {
+  const { article_id } = req.params;
+
+  return connection
+    .select(
+      'comments.comment_id',
+      'comments.votes',
+      'comments.created_at',
+      'articles.username AS author',
+      'comments.body',
+    )
+    .where('comments.article_id', '=', article_id)
+    .from('comments')
+    .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .then(matchingComments => res.status(200).send(matchingComments))
+    .catch(next);
+};

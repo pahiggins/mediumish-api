@@ -44,6 +44,16 @@ module.exports = () => {
         expect(response.status).toEqual(200);
         expect(response.body).toEqual({});
       });
+
+      describe('/comments', () => {
+        test('GET responds with status 200 and array of comments for article', async () => {
+          const response = await request(app).get('/api/articles/1/comments');
+          expect(response.status).toEqual(200);
+          expect(response.body).toHaveLength(13);
+          expect(response.body[0]).toHaveProperty('comment_id', 2);
+          expect(response.type).toEqual('application/json');
+        });
+      });
     });
 
     describe('?limit', () => {
