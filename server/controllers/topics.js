@@ -7,14 +7,16 @@ exports.getTopics = (req, res, next) => connection('topics')
 
 exports.addTopic = (req, res, next) => {
   const newTopic = {
-    slug: req.body.slug.trim(),
-    description: req.body.description.trim() || '',
+    slug: req.body.slug,
+    description: req.body.description || '',
   };
 
   return connection('topics')
     .insert(newTopic)
     .returning(['slug', 'description'])
-    .then(addedTopic => res.status(201).send(addedTopic))
+    .then(([addedTopic]) => {
+      res.status(201).send(addedTopic);
+    })
     .catch(next);
 };
 
