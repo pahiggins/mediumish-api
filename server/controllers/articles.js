@@ -146,5 +146,11 @@ exports.updateComment = (req, res, next) => {
 };
 
 exports.deleteComment = (req, res, next) => {
+  const { comment_id } = req.params;
 
+  return connection('comments')
+    .where('comment_id', '=', comment_id)
+    .del()
+    .then(() => res.status(200).send({}))
+    .catch(next);
 };

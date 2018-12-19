@@ -119,6 +119,12 @@ module.exports = () => {
             expect(response.body).toHaveProperty('comment_id', 3);
             expect(response.body).toHaveProperty('votes', 98);
           });
+
+          test('DELETE responds with status 200 and empty comment object', async () => {
+            const response = await request(app).delete('/api/articles/1/comments/3');
+            expect(response.status).toEqual(200);
+            expect(response.body).toEqual({});
+          });
         });
       });
     });
