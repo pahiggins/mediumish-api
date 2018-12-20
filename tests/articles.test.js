@@ -63,6 +63,18 @@ module.exports = () => {
         expect(body.msg).toEqual('invalid input syntax for integer');
       });
 
+      test('PATCH responds with 400 if inc_votes is not valid', async () => {
+        const { status, body } = await request(app).patch('/api/articles/text').send({ inc_votes: 'five' });
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('invalid input syntax for integer');
+      });
+
+      test('PATCH responds with 400 if inc_votes is not passed', async () => {
+        const { status, body } = await request(app).patch('/api/articles/text').send({});
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('invalid input syntax for integer');
+      });
+
       test('DELETE responds with status 200 and empty article object', async () => {
         const { status, body } = await request(app).delete('/api/articles/1');
         expect(status).toEqual(200);
