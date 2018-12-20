@@ -8,9 +8,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 In your terminal, run the following commands from the project root:
 
-1. git clone https://github.com/pahiggins/BE2-NC-Knews.git
-2. cd BE2-NC-Knews
-3. npm install
+```
+git clone https://github.com/pahiggins/BE2-NC-Knews.git
+cd BE2-NC-Knews
+npm install
+```
 
 ## Running the development server
 
