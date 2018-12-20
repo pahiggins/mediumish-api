@@ -81,7 +81,10 @@ exports.updateArticle = (req, res, next) => {
     .where('article_id', '=', article_id)
     .increment('votes', inc_votes)
     .returning('*')
-    .then(([updatedArticle]) => res.status(200).send(updatedArticle))
+    .then(([updatedArticle]) => {
+      if (!updatedArticle) return Promise.reject({ status: 404, msg: 'article not found' });
+      res.status(200).send(updatedArticle);
+    })
     .catch(next);
 };
 

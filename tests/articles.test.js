@@ -37,18 +37,30 @@ module.exports = () => {
         expect(body.msg).toEqual('invalid input syntax for integer');
       });
 
-      test('PATCH responds with status 200 and updated article object with increased votes', async () => {
+      test('PATCH responds with updated article with increased votes', async () => {
         const { status, body } = await request(app).patch('/api/articles/1').send({ inc_votes: 2 });
         expect(status).toEqual(200);
         expect(body).toHaveProperty('article_id', 1);
         expect(body).toHaveProperty('votes', 102);
       });
 
-      test('PATCH responds with status 200 and updated article object with decreased votes', async () => {
+      test('PATCH responds with updated article with decreased votes', async () => {
         const { status, body } = await request(app).patch('/api/articles/1').send({ inc_votes: -2 });
         expect(status).toEqual(200);
         expect(body).toHaveProperty('article_id', 1);
         expect(body).toHaveProperty('votes', 98);
+      });
+
+      test('PATCH responds with 404 if article_id does not exist', async () => {
+        const { status, body } = await request(app).patch('/api/articles/300').send({ inc_votes: 2 });
+        expect(status).toEqual(404);
+        expect(body.msg).toEqual('article not found');
+      });
+
+      test('PATCH responds with 400 if article_id is not valid', async () => {
+        const { status, body } = await request(app).patch('/api/articles/text').send({ inc_votes: 2 });
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('invalid input syntax for integer');
       });
 
       test('DELETE responds with status 200 and empty article object', async () => {
