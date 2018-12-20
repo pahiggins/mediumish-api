@@ -1,6 +1,34 @@
 {
-  "users": {},
-  "topics": {},
-  "articles": {},
-  "comments": {}
+  "api/": {
+    "/users": {
+      "GET": "Responds with an array of user objects",
+      "/:username": {
+        "GET": "Responds with a user object"
+      }
+    },
+    "/topics": {
+      "GET": "Responds with an array of topic objects",
+      "POST": "Accepts an object and responds with the posted topic object",
+      "/:topic/articles": {
+        "GET": "Responds with an array of article objects for a given topic",
+        "POST": "Accepts an object and responds with the posted article object"
+      }
+    },
+    "/articles": {
+      "GET": "Responds with an array of article objects",
+      "/:article_id": {
+        "GET": "Responds with an article object",
+        "PATCH": "Accepts an object and responds with the updated article object",
+        "DELETE": "Responds with an empty object",
+        "/comments": {
+          "GET": "Responds with an array of comments for the given article",
+          "POST": "Accepts an object and responds with the posted comment object",
+          "/:comment_id": {
+            "PATCH": "Accepts an object and responds with the updated comment object",
+            "DELETE": "Responds with an empty object"
+          }
+        }
+      }
+    }
+  }
 }

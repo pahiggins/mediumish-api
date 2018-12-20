@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const getApiDesc = require('./utilities');
+
 const { handle400, handle404, handle422 } = require('./errors');
 
 const app = express();
@@ -11,14 +11,8 @@ app.use(bodyParser.json());
 
 app.use('/api', api);
 
-app.use('/', getApiDesc);
-
 app.use(handle400);
 app.use(handle404);
 app.use(handle422);
-
-app.use('*', () => {
-  console.log('End of the line!');
-});
 
 module.exports = app;
