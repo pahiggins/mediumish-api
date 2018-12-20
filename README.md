@@ -20,7 +20,7 @@ In your terminal, run the following commands from the project root:
 
 ```
 npm run create:config
-Configure your knexfile.js
+Configure your knexfile.js file - see https://knexjs.org/#Installation-node
 npm run create:db
 npm run seed:run:dev
 npm run dev
@@ -33,7 +33,7 @@ In your terminal, run the following commands from the project root:
 
 ```
 npm run create:config
-Configure your knexfile.js
+Configure your knexfile.js file - see https://knexjs.org/#Installation-node
 npm run create:db
 npm run seed:run:test
 npm test
