@@ -17,6 +17,7 @@ npm install
 ## Prerequisites
 
 - Node v10.12.0
+- NPM v6.4.1
 - PostgreSQL v10.6
 
 ## Running Development Server
