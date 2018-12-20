@@ -14,7 +14,7 @@ cd BE2-NC-Knews
 npm install
 ```
 
-## Running the development server
+## Running Development Server
 
 In your terminal, run the following command from the project root:
 
@@ -32,7 +32,7 @@ npm run dev
 
 View available API at http://localhost:3000/api.
 
-## Running the tests
+## Running Tests
 
 In your terminal, run the following command from the project root:
 
