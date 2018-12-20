@@ -124,22 +124,28 @@ exports.getComments = (req, res, next) => {
     .orderBy((`comments.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .from('comments')
     .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
-    .then(matchingComments => res.status(200).send(matchingComments))
+    .then((matchingComments) => {
+      if (matchingComments.length === 0) return Promise.reject({ status: 404, msg: 'article not found' });
+      res.status(200).send(matchingComments);
+    })
     .catch(next);
 };
 
 exports.addComment = (req, res, next) => {
   const { article_id } = req.params;
   const newComment = {
-    username: req.body.username.trim(),
-    body: req.body.body.trim() || '',
+    username: req.body.username,
+    body: req.body.body,
     article_id,
   };
 
   return connection('comments')
     .insert(newComment)
     .returning('*')
-    .then(([addedComment]) => res.status(201).send(addedComment))
+    .then(([addedComment]) => {
+      if (!addedComment) return Promise.reject({ status: 404, msg: 'article not found' });
+      res.status(201).send(addedComment);
+    })
     .catch(next);
 };
 

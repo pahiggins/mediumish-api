@@ -135,7 +135,7 @@ module.exports = () => {
       });
 
       describe('/comments', () => {
-        test('GET responds with status 200 and array of comments for article', async () => {
+        test('GET responds with an array of comments if valid and existing article_id', async () => {
           const { status, body, type } = await request(app).get('/api/articles/1/comments');
           expect(status).toEqual(200);
           expect(body).toHaveLength(10);
@@ -143,7 +143,19 @@ module.exports = () => {
           expect(type).toEqual('application/json');
         });
 
-        test('POST responds with status 201 and added comment', async () => {
+        test('GET responds with 404 if article_id does not exist', async () => {
+          const { status, body } = await request(app).get('/api/articles/300/comments');
+          expect(status).toEqual(404);
+          expect(body.msg).toEqual('article not found');
+        });
+
+        test('GET responds with 400 if article_id is not valid', async () => {
+          const { status, body } = await request(app).get('/api/articles/text/comments');
+          expect(status).toEqual(400);
+          expect(body.msg).toEqual('invalid input syntax for integer');
+        });
+
+        test('POST responds with added comment if valid', async () => {
           const comment = { username: 'butter_bridge', body: 'Sample comment...' };
           const { status, body, type } = await request(app).post('/api/articles/1/comments').send(comment);
           expect(status).toEqual(201);
@@ -151,6 +163,34 @@ module.exports = () => {
           expect(body).toHaveProperty('body', comment.body);
           expect(body).toHaveProperty('comment_id', 19);
           expect(type).toEqual('application/json');
+        });
+
+        test('POST responds with 400 if comment is missing username', async () => {
+          const comment = { body: 'Sample comment...' };
+          const { status, body } = await request(app).post('/api/articles/1/comments').send(comment);
+          expect(status).toEqual(400);
+          expect(body.msg).toEqual('username is required');
+        });
+
+        test('POST responds with 400 if comment is missing body', async () => {
+          const comment = { username: 'butter_bridge' };
+          const { status, body } = await request(app).post('/api/articles/1/comments').send(comment);
+          expect(status).toEqual(400);
+          expect(body.msg).toEqual('body is required');
+        });
+
+        test('POST responds with 400 if article_id does not exist', async () => {
+          const comment = { username: 'butter_bridge', body: 'Sample comment...' };
+          const { status, body } = await request(app).post('/api/articles/300/comments').send(comment);
+          expect(status).toEqual(400);
+          expect(body.msg).toEqual('invalid input syntax');
+        });
+
+        test('POST responds with 400 if article_id is not valid', async () => {
+          const comment = { username: 'butter_bridge', body: 'Sample comment...' };
+          const { status, body } = await request(app).post('/api/articles/text/comments').send(comment);
+          expect(status).toEqual(400);
+          expect(body.msg).toEqual('invalid input syntax for integer');
         });
 
         describe('?limit', () => {
