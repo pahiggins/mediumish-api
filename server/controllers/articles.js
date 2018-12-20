@@ -136,10 +136,21 @@ exports.getComments = (req, res, next) => {
 };
 
 exports.addComment = (req, res, next) => {
+  let username;
+  let body;
   const { article_id } = req.params;
+
+  if (typeof req.body.username === 'string') {
+    username = req.body.username.trim();
+  }
+
+  if (typeof req.body.body === 'string') {
+    body = req.body.body.trim();
+  }
+
   const newComment = {
-    username: req.body.username,
-    body: req.body.body,
+    username,
+    body,
     article_id,
   };
 
