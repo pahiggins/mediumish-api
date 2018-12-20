@@ -57,6 +57,7 @@ Additional notes about how to deploy this on a live server.
 * [Node](https://nodejs.org/en/) - JS runtime
 * [Express](https://expressjs.com/) - Web application framework
 * [Knex](https://knexjs.org) - SQL query builder
+* [PostgreSQL](https://www.postgresql.org/) - Relational database
 
 ## Versioning
 
