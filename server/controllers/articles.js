@@ -77,6 +77,10 @@ exports.updateArticle = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
 
+  if (typeof inc_votes !== 'number') {
+    next({ code: '22P02' });
+  }
+
   return connection('articles')
     .where('article_id', '=', article_id)
     .increment('votes', inc_votes)

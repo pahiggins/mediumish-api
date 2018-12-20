@@ -19,6 +19,7 @@ npm install
 In your terminal, run the following commands from the project root:
 
 ```
+npm run seed:run:dev
 npm run dev
 ```
 
@@ -27,7 +28,8 @@ npm run dev
 In your terminal, run the following commands from the project root:
 
 ```
-npm t
+npm run seed:run:test
+npm test
 ```
 
 ## Deployment
