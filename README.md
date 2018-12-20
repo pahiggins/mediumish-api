@@ -4,7 +4,9 @@ API for use with NC Knews web app.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system. In your terminal, run the following commands:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See 'Deployment' for notes on how to deploy the project on a live server.
+
+In your terminal, run the following commands:
 
 1. git clone https://github.com/pahiggins/BE2-NC-Knews.git
 2. cd BE2-NC-Knews
@@ -42,13 +44,13 @@ Add additional notes about how to deploy this on a live system.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/pahiggins/BE2-NC-Knews/tags).
 
 ## Authors
 
 * **Peter Higgins** - *Initial work* - [PurpleBooth](https://github.com/pahiggins)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/pahiggins/BE2-NC-Knews/contributors) who participated in this project.
 
 ## License
 
@@ -56,4 +58,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-Fellow Northcoders and tutors.
+Fellow Northcoders and tutors ;-)
