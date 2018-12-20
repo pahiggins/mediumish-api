@@ -29,12 +29,18 @@ module.exports = () => {
     });
 
     describe('/:topic/articles', () => {
-      test('GET responds with status 200 and array of articles for a topic', async () => {
+      test('GET responds with an array of articles for an existing topic', async () => {
         const { status, body } = await request(app).get('/api/topics/cats/articles');
         expect(status).toEqual(200);
         expect(body).toHaveLength(1);
         expect(body[0]).toHaveProperty('title', 'UNCOVERED: catspiracy to bring down democracy');
         expect(body[0]).toHaveProperty('comment_count', '2');
+      });
+
+      test('GET responds with 404 if topic does not exist', async () => {
+        const { status, body } = await request(app).get('/api/topics/invalidTopic/articles');
+        expect(status).toEqual(404);
+        expect(body.msg).toEqual('article not found');
       });
 
       test('POST responds with status 201 and added article', async () => {
