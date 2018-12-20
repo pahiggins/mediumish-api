@@ -38,7 +38,7 @@ npm run dev
 
 View available API at http://localhost:3000/api.
 
-## Running Tests
+## Running Test Server
 
 In your terminal, run the following command from the project root:
 
