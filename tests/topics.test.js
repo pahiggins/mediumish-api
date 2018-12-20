@@ -21,7 +21,7 @@ module.exports = () => {
       expect(type).toEqual('application/json');
     });
 
-    test('POST responds with 400 if topic is invalid', async () => {
+    test('POST responds with 400 if topic is missing slug', async () => {
       const topic = { description: 'This is a description...' };
       const { status, body } = await request(app).post('/api/topics').send(topic);
       expect(status).toEqual(400);
@@ -43,7 +43,7 @@ module.exports = () => {
         expect(body.msg).toEqual('article not found');
       });
 
-      test('POST responds with status 201 and added article', async () => {
+      test('POST responds with the added article if valid', async () => {
         const article = { title: 'Sample title...', body: 'Sample body...', username: 'butter_bridge' };
         const { status, body, type } = await request(app).post('/api/topics/cats/articles').send(article);
         expect(status).toEqual(201);
@@ -51,6 +51,27 @@ module.exports = () => {
         expect(body[0]).toHaveProperty('body', 'Sample body...');
         expect(body[0]).toHaveProperty('username', 'butter_bridge');
         expect(type).toEqual('application/json');
+      });
+
+      test('POST responds with 400 if article is missing title', async () => {
+        const article = { body: 'This is a body...', username: 'butter_bridge' };
+        const { status, body } = await request(app).post('/api/topics/cats/articles').send(article);
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('title is required');
+      });
+
+      test('POST responds with 400 if article is missing username', async () => {
+        const article = { title: 'Sample title...', body: 'This is a body...' };
+        const { status, body } = await request(app).post('/api/topics/cats/articles').send(article);
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('username is required');
+      });
+
+      test('POST responds with 400 if username does not exist', async () => {
+        const article = { title: 'Sample title...', body: 'Sample body...', username: 'unknown' };
+        const { status, body } = await request(app).post('/api/topics/cats/articles').send(article);
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('invalid input syntax');
       });
 
       describe('?limit', () => {

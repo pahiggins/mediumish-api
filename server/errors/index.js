@@ -11,6 +11,7 @@ exports.handle400 = (err, req, res, next) => {
     '22P02': 'invalid input syntax for integer',
     '42703': 'column does not exist in table',
     '23502': `${err.column} is required`,
+    '23503': 'invalid input syntax',
   };
 
   codes[err.code]

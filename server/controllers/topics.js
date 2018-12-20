@@ -63,15 +63,19 @@ exports.getArticlesByTopic = (req, res, next) => {
 };
 
 exports.addArticleByTopic = (req, res, next) => {
+  const { topic } = req.params;
   const newArticle = {
-    title: req.body.title.trim(),
-    body: req.body.body.trim() || '',
-    username: req.body.username.trim(),
+    title: req.body.title,
+    body: req.body.body || '',
+    username: req.body.username,
+    topic,
   };
 
   return connection('articles')
     .insert(newArticle)
     .returning('*')
-    .then(addedArticle => res.status(201).send(addedArticle))
+    .then((addedArticle) => {
+      res.status(201).send(addedArticle);
+    })
     .catch(next);
 };
