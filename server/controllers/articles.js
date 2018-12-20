@@ -94,7 +94,10 @@ exports.deleteArticle = (req, res, next) => {
   return connection('articles')
     .where('article_id', '=', article_id)
     .del()
-    .then(() => res.status(200).send({}))
+    .then((updatedArticle) => {
+      if (updatedArticle === 0) return Promise.reject({ status: 404, msg: 'article not found' });
+      res.status(200).send({});
+    })
     .catch(next);
 };
 
