@@ -94,7 +94,7 @@ module.exports = () => {
       });
 
       describe('?limit', () => {
-        test('GET responds with status 200 and array of articles for a topic using limit query', async () => {
+        test('GET responds with an array of articles for a topic using limit query', async () => {
           const { status, body } = await request(app).get('/api/articles?limit=3');
           expect(status).toEqual(200);
           expect(body).toHaveLength(3);
@@ -102,7 +102,7 @@ module.exports = () => {
       });
 
       describe('?sort_by', () => {
-        test('GET responds with status 200 and array of articles for a topic using sort_by query', async () => {
+        test('GET responds with an array of articles for a topic using sort_by query', async () => {
           const { status, body } = await request(app).get('/api/articles?sort_by=article_id');
           expect(status).toEqual(200);
           expect(body[0]).toHaveProperty('article_id', 12);
@@ -110,7 +110,7 @@ module.exports = () => {
       });
 
       describe('?p', () => {
-        test('GET responds with status 200 and array of articles for a topic using p query', async () => {
+        test('GET responds with an array of articles for a topic using p query', async () => {
           const { status, body } = await request(app).get('/api/articles?p=1');
           expect(status).toEqual(200);
           expect(body).toHaveLength(2);
@@ -118,7 +118,7 @@ module.exports = () => {
       });
 
       describe('?sort_ascending', () => {
-        test('GET responds with status 200 and array of articles for a topic using sort_ascending query', async () => {
+        test('GET responds with an array of articles for a topic using sort_ascending query', async () => {
           const { status, body } = await request(app).get('/api/articles?sort_ascending=true');
           expect(status).toEqual(200);
           expect(body[0]).toHaveProperty('article_id', 12);
@@ -126,7 +126,7 @@ module.exports = () => {
       });
 
       describe('?limit&&sort_by&&p&&sort_ascending', () => {
-        test('GET responds with status 200 and array of articles for a topic using multiple queries', async () => {
+        test('GET responds with an array of articles for a topic using multiple queries', async () => {
           const { status, body } = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
           expect(status).toEqual(200);
           expect(body).toHaveLength(3);
@@ -194,7 +194,7 @@ module.exports = () => {
         });
 
         describe('?limit', () => {
-          test('GET responds with status 200 and array of comments for an article using limit query', async () => {
+          test('GET responds with an array of comments for an article using limit query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?limit=3');
             expect(status).toEqual(200);
             expect(body).toHaveLength(3);
@@ -202,7 +202,7 @@ module.exports = () => {
         });
 
         describe('?sort_by', () => {
-          test('GET responds with status 200 and array of comments for an article using sort_by query', async () => {
+          test('GET responds with an array of comments for an article using sort_by query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?sort_by=comment_id');
             expect(status).toEqual(200);
             expect(body[0]).toHaveProperty('comment_id', 18);
@@ -210,7 +210,7 @@ module.exports = () => {
         });
 
         describe('?p', () => {
-          test('GET responds with status 200 and array of comments for an article using p query', async () => {
+          test('GET responds with an array of comments for an article using p query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?p=1');
             expect(status).toEqual(200);
             expect(body).toHaveLength(3);
@@ -218,7 +218,7 @@ module.exports = () => {
         });
 
         describe('?sort_ascending', () => {
-          test('GET responds with status 200 and array of comments for an article using sort_ascending query', async () => {
+          test('GET responds with an array of comments for an article using sort_ascending query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?sort_ascending=true');
             expect(status).toEqual(200);
             expect(body[0]).toHaveProperty('comment_id', 18);
@@ -226,7 +226,7 @@ module.exports = () => {
         });
 
         describe('?limit&&sort_by&&p&&sort_ascending', () => {
-          test('GET responds with status 200 and array of comments for an article using multiple queries', async () => {
+          test('GET responds with an array of comments for an article using multiple queries', async () => {
             const { status, body } = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
             expect(status).toEqual(200);
             expect(body).toHaveLength(3);
@@ -235,7 +235,7 @@ module.exports = () => {
         });
 
         describe('/comment_id', () => {
-          test('PATCH responds with status 200 and updated comment object with increased votes', async () => {
+          test('PATCH responds with an updated comment object with increased votes', async () => {
             const { status, body } = await request(app).patch('/api/articles/1/comments/3').send({ inc_votes: 2 });
             expect(status).toEqual(200);
             expect(body).toHaveProperty('comment_id', 3);
@@ -247,6 +247,30 @@ module.exports = () => {
             expect(status).toEqual(200);
             expect(body).toHaveProperty('comment_id', 3);
             expect(body).toHaveProperty('votes', 98);
+          });
+
+          test('PATCH responds with 404 if comment_id does not exist', async () => {
+            const { status, body } = await request(app).patch('/api/articles/1/comments/300').send({ inc_votes: -2 });
+            expect(status).toEqual(404);
+            expect(body.msg).toEqual('comment not found');
+          });
+
+          test('PATCH responds with 400 if comment_id is not valid', async () => {
+            const { status, body } = await request(app).patch('/api/articles/1/comments/text').send({ inc_votes: -2 });
+            expect(status).toEqual(400);
+            expect(body.msg).toEqual('invalid input syntax for integer');
+          });
+
+          test('PATCH responds with 400 if inc_votes is not valid', async () => {
+            const { status, body } = await request(app).patch('/api/articles/1/comments/3').send({ inc_votes: 'five' });
+            expect(status).toEqual(400);
+            expect(body.msg).toEqual('invalid input syntax for integer');
+          });
+
+          test('PATCH responds with 400 if inc_votes is not passed', async () => {
+            const { status, body } = await request(app).patch('/api/articles/1/comments/3').send({});
+            expect(status).toEqual(400);
+            expect(body.msg).toEqual('invalid input syntax for integer');
           });
 
           test('DELETE responds with status 200 and empty comment object', async () => {

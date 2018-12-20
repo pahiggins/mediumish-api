@@ -153,11 +153,18 @@ exports.updateComment = (req, res, next) => {
   const { comment_id } = req.params;
   const { inc_votes } = req.body;
 
+  if (typeof inc_votes !== 'number') {
+    next({ code: '22P02' });
+  }
+
   return connection('comments')
     .where('comment_id', '=', comment_id)
     .increment('votes', inc_votes)
     .returning('*')
-    .then(([updatedComment]) => res.status(200).send(updatedComment))
+    .then(([updatedComment]) => {
+      if (!updatedComment) return Promise.reject({ status: 404, msg: 'comment not found' });
+      res.status(200).send(updatedComment);
+    })
     .catch(next);
 };
 
