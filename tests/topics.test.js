@@ -93,6 +93,12 @@ module.exports = () => {
           expect(status).toEqual(200);
           expect(body).toHaveLength(3);
         });
+
+        test('GET responds with array of all articles for a topic using invalid limit query', async () => {
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=text');
+          expect(status).toEqual(200);
+          expect(body).toHaveLength(11);
+        });
       });
 
       describe('?sort_by', () => {
@@ -100,6 +106,12 @@ module.exports = () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_by=article_id');
           expect(status).toEqual(200);
           expect(body[0]).toHaveProperty('article_id', 12);
+        });
+
+        test('GET responds with 400 for a topic using invalid sort_by query', async () => {
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_by=invalid');
+          expect(status).toEqual(400);
+          expect(body.msg).toEqual('column does not exist in table');
         });
       });
 
@@ -109,6 +121,18 @@ module.exports = () => {
           expect(status).toEqual(200);
           expect(body).toHaveLength(1);
         });
+
+        test('GET responds with array of all articles for a topic using invalid p query', async () => {
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?p=text');
+          expect(status).toEqual(200);
+          expect(body).toHaveLength(10);
+        });
+
+        test('GET responds with 404 for a topic using unavailable p query', async () => {
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?p=10');
+          expect(status).toEqual(404);
+          expect(body.msg).toEqual('article not found');
+        });
       });
 
       describe('?sort_ascending', () => {
@@ -116,6 +140,12 @@ module.exports = () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_ascending=true');
           expect(status).toEqual(200);
           expect(body[0]).toHaveProperty('article_id', 12);
+        });
+
+        test('GET responds with array of all articles for a topic using invalid sort_ascending query', async () => {
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_ascending=text');
+          expect(status).toEqual(200);
+          expect(body).toHaveLength(10);
         });
       });
 
