@@ -54,7 +54,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Peter Higgins** - *Initial work* - [PurpleBooth](https://github.com/pahiggins)
+* **Peter Higgins** - [GitHub Profile](https://github.com/pahiggins)
 
 See also the list of [contributors](https://github.com/pahiggins/BE2-NC-Knews/contributors) who participated in this project.
 
