@@ -6,7 +6,7 @@ API for use with NC Knews web app.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system. In your terminal, run the following commands:
 
-1. git clone [git@github.com:pahiggins/BE2-NC-Knews.git]
+1. git clone https://github.com/pahiggins/BE2-NC-Knews.git
 2. cd BE2-NC-Knews
 3. npm install
 
