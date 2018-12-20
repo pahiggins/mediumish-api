@@ -94,8 +94,8 @@ exports.deleteArticle = (req, res, next) => {
   return connection('articles')
     .where('article_id', '=', article_id)
     .del()
-    .then((updatedArticle) => {
-      if (updatedArticle === 0) return Promise.reject({ status: 404, msg: 'article not found' });
+    .then((deletedArticle) => {
+      if (deletedArticle === 0) return Promise.reject({ status: 404, msg: 'article not found' });
       res.status(200).send({});
     })
     .catch(next);
@@ -174,6 +174,9 @@ exports.deleteComment = (req, res, next) => {
   return connection('comments')
     .where('comment_id', '=', comment_id)
     .del()
-    .then(() => res.status(200).send({}))
+    .then((deletedComment) => {
+      if (deletedComment === 0) return Promise.reject({ status: 404, msg: 'comment not found' });
+      res.status(200).send({});
+    })
     .catch(next);
 };

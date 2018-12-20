@@ -273,10 +273,22 @@ module.exports = () => {
             expect(body.msg).toEqual('invalid input syntax for integer');
           });
 
-          test('DELETE responds with status 200 and empty comment object', async () => {
+          test('DELETE responds with an empty comment object', async () => {
             const { status, body } = await request(app).delete('/api/articles/1/comments/3');
             expect(status).toEqual(200);
             expect(body).toEqual({});
+          });
+
+          test('DELETE responds with 404 if comment_id does not exist', async () => {
+            const { status, body } = await request(app).delete('/api/articles/1/comments/300');
+            expect(status).toEqual(404);
+            expect(body.msg).toEqual('comment not found');
+          });
+
+          test('DELETE responds with 400 if comment_id is not valid', async () => {
+            const { status, body } = await request(app).delete('/api/articles/1/comments/text');
+            expect(status).toEqual(400);
+            expect(body.msg).toEqual('invalid input syntax for integer');
           });
         });
       });
