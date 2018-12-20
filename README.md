@@ -14,6 +14,11 @@ cd BE2-NC-Knews
 npm install
 ```
 
+## Prerequisites
+
+- Node
+- PostgreSQL
+
 ## Running Development Server
 
 In your terminal, run the following command from the project root:
