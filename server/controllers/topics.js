@@ -7,9 +7,20 @@ exports.getTopics = (req, res, next) => connection('topics')
   .catch(next);
 
 exports.addTopic = (req, res, next) => {
+  let slug;
+  let description;
+
+  if (typeof req.body.slug === 'string') {
+    slug = req.body.slug.trim();
+  }
+
+  if (typeof req.body.description === 'string') {
+    description = req.body.description.trim();
+  }
+
   const newTopic = {
-    slug: req.body.slug,
-    description: req.body.description || '',
+    slug,
+    description,
   };
 
   return connection('topics')
