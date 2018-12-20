@@ -12,6 +12,12 @@ module.exports = () => {
       expect(type).toEqual('application/json');
     });
 
+    test('GET responds with 405 for invalid methods', async () => {
+      const { status, body } = await request(app).delete('/api/topics');
+      expect(status).toEqual(405);
+      expect(body.msg).toEqual('method not allowed');
+    });
+
     test('POST responds with the added topic if valid', async () => {
       const topic = { description: 'This is a description...', slug: 'comedy' };
       const { status, body, type } = await request(app).post('/api/topics').send(topic);

@@ -4,7 +4,14 @@ const {
   getUser,
 } = require('../controllers/users');
 
-users.get('/', getUsers);
-users.get('/:username', getUser);
+const { handle405 } = require('../errors');
+
+users.route('/')
+  .get(getUsers)
+  .all(handle405);
+
+users.route('/:username')
+  .get(getUser)
+  .all(handle405);
 
 module.exports = users;

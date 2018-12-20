@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const connection = require('../../db/connection');
 
 exports.getUsers = (req, res, next) => connection('users')

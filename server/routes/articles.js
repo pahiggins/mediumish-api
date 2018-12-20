@@ -10,19 +10,26 @@ const {
   deleteComment,
 } = require('../controllers/articles');
 
-articles.get('/', getArticles);
+const { handle405 } = require('../errors');
+
+articles.route('/')
+  .get(getArticles)
+  .all(handle405);
 
 articles.route('/:article_id')
   .get(getArticle)
   .patch(updateArticle)
-  .delete(deleteArticle);
+  .delete(deleteArticle)
+  .all(handle405);
 
 articles.route('/:article_id/comments')
   .get(getComments)
-  .post(addComment);
+  .post(addComment)
+  .all(handle405);
 
 articles.route('/:article_id/comments/:comment_id')
   .patch(updateComment)
-  .delete(deleteComment);
+  .delete(deleteComment)
+  .all(handle405);
 
 module.exports = articles;

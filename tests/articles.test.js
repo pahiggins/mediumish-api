@@ -12,6 +12,12 @@ module.exports = () => {
       expect(type).toEqual('application/json');
     });
 
+    test('GET responds with 405 for invalid methods', async () => {
+      const { status, body } = await request(app).delete('/api/articles');
+      expect(status).toEqual(405);
+      expect(body.msg).toEqual('method not allowed');
+    });
+
     describe('/:article_id', () => {
       test('GET responds with an article object if valid and existing article_id', async () => {
         const { status, body } = await request(app).get('/api/articles/3');

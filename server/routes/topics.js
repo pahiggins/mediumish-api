@@ -5,9 +5,12 @@ const {
   getArticlesByTopic,
   addArticleByTopic,
 } = require('../controllers/topics');
+const { handle405 } = require('../errors');
 
-topics.get('/', getTopics);
-topics.post('/', addTopic);
+topics.route('/')
+  .get(getTopics)
+  .post(addTopic)
+  .all(handle405);
 topics.get('/:topic/articles', getArticlesByTopic);
 topics.post('/:topic/articles', addArticleByTopic);
 
