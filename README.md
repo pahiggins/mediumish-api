@@ -16,11 +16,15 @@ npm install
 
 ## Running the development server
 
-In your terminal, run the following commands from the project root:
+In your terminal, run the following command from the project root:
 
 ```
 npm run create:config
-Configure your knexfile.js file - see https://knexjs.org/#Installation-node
+```
+
+Configure your knexfile.js file (see https://knexjs.org/#Installation-node), then run the following commands:
+
+```
 npm run create:db
 npm run seed:run:dev
 npm run dev
@@ -29,11 +33,15 @@ View available API at http://localhost:3000/api
 
 ## Running the tests
 
-In your terminal, run the following commands from the project root:
+In your terminal, run the following command from the project root:
 
 ```
 npm run create:config
-Configure your knexfile.js file - see https://knexjs.org/#Installation-node
+```
+
+Configure your knexfile.js file (see https://knexjs.org/#Installation-node), then run the following commands:
+
+```
 npm run create:db
 npm run seed:run:test
 npm test
