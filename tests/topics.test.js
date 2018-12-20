@@ -34,6 +34,13 @@ module.exports = () => {
       expect(body.msg).toEqual('slug is required');
     });
 
+    test('POST responds with 422 if topic already exists', async () => {
+      const topic = { description: 'This is a description...', slug: 'mitch' };
+      const { status, body } = await request(app).post('/api/topics').send(topic);
+      expect(status).toEqual(422);
+      expect(body.msg).toEqual('duplicate key value violates unique constraint');
+    });
+
     describe('/:topic/articles', () => {
       test('GET responds with an array of articles for an existing topic', async () => {
         const { status, body } = await request(app).get('/api/topics/cats/articles');
