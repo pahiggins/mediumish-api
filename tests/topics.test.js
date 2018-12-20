@@ -75,7 +75,7 @@ module.exports = () => {
       });
 
       describe('?limit', () => {
-        test('GET responds with status 200 and array of articles for a topic using limit query', async () => {
+        test('GET responds with array of articles for a topic using limit query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=3');
           expect(status).toEqual(200);
           expect(body).toHaveLength(3);
@@ -83,7 +83,7 @@ module.exports = () => {
       });
 
       describe('?sort_by', () => {
-        test('GET responds with status 200 and array of articles for a topic using sort_by query', async () => {
+        test('GET responds with array of articles for a topic using sort_by query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_by=article_id');
           expect(status).toEqual(200);
           expect(body[0]).toHaveProperty('article_id', 12);
@@ -91,7 +91,7 @@ module.exports = () => {
       });
 
       describe('?p', () => {
-        test('GET responds with status 200 and array of articles for a topic using p query', async () => {
+        test('GET responds with array of articles for a topic using p query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?p=1');
           expect(status).toEqual(200);
           expect(body).toHaveLength(1);
@@ -99,7 +99,7 @@ module.exports = () => {
       });
 
       describe('?sort_ascending', () => {
-        test('GET responds with status 200 and array of articles for a topic using sort_ascending query', async () => {
+        test('GET responds with array of articles for a topic using sort_ascending query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_ascending=true');
           expect(status).toEqual(200);
           expect(body[0]).toHaveProperty('article_id', 12);
@@ -107,7 +107,7 @@ module.exports = () => {
       });
 
       describe('?limit&&sort_by&&p&&sort_ascending', () => {
-        test('GET responds with status 200 and array of articles for a topic using multiple queries', async () => {
+        test('GET responds with array of articles for a topic using multiple queries', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=3&&sort_by=article_id');
           expect(status).toEqual(200);
           expect(body).toHaveLength(3);

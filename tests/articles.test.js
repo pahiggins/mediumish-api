@@ -4,7 +4,7 @@ const app = require('../server/app');
 
 module.exports = () => {
   describe('/api/articles', () => {
-    test('GET responds with status 200 and array of articles', async () => {
+    test('GET responds with an array of articles', async () => {
       const { status, body, type } = await request(app).get('/api/articles');
       expect(status).toEqual(200);
       expect(body).toHaveLength(10);
@@ -13,7 +13,7 @@ module.exports = () => {
     });
 
     describe('/:article_id', () => {
-      test('GET responds with status 200 and article object', async () => {
+      test('GET responds with an article object if valid and existing article_id', async () => {
         const { status, body } = await request(app).get('/api/articles/3');
         expect(status).toEqual(200);
         expect(body).toHaveProperty('article_id', 3);
@@ -23,6 +23,18 @@ module.exports = () => {
         expect(body).toHaveProperty('body', 'some gifs');
         expect(body).toHaveProperty('comment_count', '0');
         expect(body).toHaveProperty('topic', 'mitch');
+      });
+
+      test('GET responds with 404 if article_id does not exist', async () => {
+        const { status, body } = await request(app).get('/api/articles/300');
+        expect(status).toEqual(404);
+        expect(body.msg).toEqual('article not found');
+      });
+
+      test('GET responds with 400 if article_id is not valid', async () => {
+        const { status, body } = await request(app).get('/api/articles/text');
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('invalid input syntax for integer');
       });
 
       test('PATCH responds with status 200 and updated article object with increased votes', async () => {

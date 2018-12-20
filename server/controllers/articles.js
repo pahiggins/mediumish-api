@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const connection = require('../../db/connection');
 
 exports.getArticles = (req, res, next) => {
@@ -65,7 +66,10 @@ exports.getArticle = (req, res, next) => {
       'articles.topic',
       'comments.article_id',
     )
-    .then(([matchingArticles]) => res.status(200).send(matchingArticles))
+    .then(([matchingArticle]) => {
+      if (!matchingArticle) return Promise.reject({ status: 404, msg: 'article not found' });
+      res.status(200).send(matchingArticle);
+    })
     .catch(next);
 };
 
