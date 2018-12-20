@@ -28,8 +28,9 @@ Configure your knexfile.js file (see https://knexjs.org/#Installation-node), the
 npm run create:db
 npm run seed:run:dev
 npm run dev
-View available API at http://localhost:3000/api
 ```
+
+View available API at http://localhost:3000/api.
 
 ## Running the tests
 
