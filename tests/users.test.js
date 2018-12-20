@@ -4,7 +4,7 @@ const app = require('../server/app');
 
 module.exports = () => {
   describe('/api/users', () => {
-    test('GET responds with status 200 and array of users', async () => {
+    test('GET responds with an array of users', async () => {
       const { status, body, type } = await request(app).get('/api/users');
       expect(status).toEqual(200);
       expect(body).toHaveLength(3);
@@ -13,13 +13,20 @@ module.exports = () => {
     });
 
     describe('/:username', () => {
-      test('GET responds with status 200 and user object', async () => {
+      test('GET responds with a user object if valid and existing username', async () => {
         const { status, body, type } = await request(app).get('/api/users/butter_bridge');
         expect(status).toEqual(200);
         expect(body).toHaveProperty('username', 'butter_bridge');
         expect(body).toHaveProperty('name', 'jonny');
         expect(body).toHaveProperty('avatar_url', 'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg');
         expect(type).toEqual('application/json');
+      });
+
+
+      test('GET responds with 404 if username does not exist', async () => {
+        const { status, body } = await request(app).get('/api/users/unknown');
+        expect(status).toEqual(404);
+        expect(body.msg).toEqual('user not found');
       });
     });
   });

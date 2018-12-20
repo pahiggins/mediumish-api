@@ -10,6 +10,9 @@ exports.getUser = (req, res, next) => {
 
   return connection('users')
     .where('username', '=', username)
-    .then(([matchingUser]) => res.status(200).send(matchingUser))
+    .then(([matchingUser]) => {
+      if (!matchingUser) return Promise.reject({ status: 404, msg: 'user not found' });
+      res.status(200).send(matchingUser);
+    })
     .catch(next);
 };
