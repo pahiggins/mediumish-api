@@ -4,7 +4,7 @@ exports.up = function (knex, Promise) {
     articlesTable.increments('article_id');
     articlesTable.unique('article_id');
     articlesTable.string('title').notNullable();
-    articlesTable.text('body');
+    articlesTable.text('body').notNullable();
     articlesTable.integer('votes').defaultTo(0);
     articlesTable.string('topic').references('topics.slug').onDelete('CASCADE');
     articlesTable.string('username').references('users.username').onDelete('CASCADE').notNullable();

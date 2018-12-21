@@ -67,9 +67,9 @@ module.exports = () => {
         const article = { title: 'Sample title...', body: 'Sample body...', username: 'butter_bridge' };
         const { status, body, type } = await request(app).post('/api/topics/cats/articles').send(article);
         expect(status).toEqual(201);
-        expect(body[0]).toHaveProperty('title', 'Sample title...');
-        expect(body[0]).toHaveProperty('body', 'Sample body...');
-        expect(body[0]).toHaveProperty('username', 'butter_bridge');
+        expect(body).toHaveProperty('title', 'Sample title...');
+        expect(body).toHaveProperty('body', 'Sample body...');
+        expect(body).toHaveProperty('username', 'butter_bridge');
         expect(type).toEqual('application/json');
       });
 

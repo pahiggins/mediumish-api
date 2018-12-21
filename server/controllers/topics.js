@@ -74,18 +74,34 @@ exports.getArticles = (req, res, next) => {
 };
 
 exports.addArticle = (req, res, next) => {
+  let title;
+  let body;
+  let username;
   const { topic } = req.params;
+
+  if (typeof req.body.title === 'string') {
+    title = req.body.title.trim();
+  }
+
+  if (typeof req.body.body === 'string') {
+    body = req.body.body.trim();
+  }
+
+  if (typeof req.body.username === 'string') {
+    username = req.body.username.trim();
+  }
+
   const newArticle = {
-    title: req.body.title,
-    body: req.body.body || '',
-    username: req.body.username,
+    title,
+    body,
+    username,
     topic,
   };
 
   return connection('articles')
     .insert(newArticle)
     .returning('*')
-    .then((addedArticle) => {
+    .then(([addedArticle]) => {
       res.status(201).send(addedArticle);
     })
     .catch(next);
