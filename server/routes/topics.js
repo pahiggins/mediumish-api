@@ -5,6 +5,7 @@ const {
   getArticles,
   addArticle,
 } = require('../controllers/topics');
+
 const { handle405 } = require('../errors');
 
 topics.route('/')
@@ -13,11 +14,8 @@ topics.route('/')
   .all(handle405);
 
 topics.route('/:topic/articles')
-  .get(getArticles);
-// .all(handle405);
-
-topics.route('/:topic/articles')
-  .post(addArticle);
-// .all(handle405);
+  .get(getArticles)
+  .post(addArticle)
+  .all(handle405);
 
 module.exports = topics;
