@@ -6,7 +6,6 @@ exports.handle400 = (err, req, res, next) => {
     '22P02': 'invalid input syntax for integer',
     '42703': 'column does not exist in table',
     '23502': `${err.column} is required`,
-    '23503': 'invalid input syntax',
   };
 
   codes[err.code]
@@ -15,9 +14,19 @@ exports.handle400 = (err, req, res, next) => {
 };
 
 exports.handle404 = (err, req, res, next) => {
-  err.status === 404
-    ? res.status(404).send({ msg: err.msg })
-    : next(err);
+  const codes = {
+    '23503': 'invalid input syntax',
+  };
+
+  if (codes[err.code]) {
+    res.status(404).send({ msg: codes[err.code] });
+  }
+
+  if (err.status === 404) {
+    res.status(404).send({ msg: err.msg });
+  }
+
+  next(err);
 };
 
 exports.handle405 = (req, res, next) => {

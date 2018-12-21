@@ -94,10 +94,17 @@ module.exports = () => {
         expect(body.msg).toEqual('username is required');
       });
 
-      test('POST responds with 400 if username does not exist', async () => {
+      test('POST responds with 404 if username does not exist', async () => {
         const article = { title: 'Sample title...', body: 'Sample body...', username: 'unknown' };
         const { status, body } = await request(app).post('/api/topics/cats/articles').send(article);
-        expect(status).toEqual(400);
+        expect(status).toEqual(404);
+        expect(body.msg).toEqual('invalid input syntax');
+      });
+
+      test('POST responds with 404 if topic does not exist', async () => {
+        const article = { title: 'Sample title...', body: 'Sample body...', username: 'butter_bridge' };
+        const { status, body } = await request(app).post('/api/topics/unknown/articles').send(article);
+        expect(status).toEqual(404);
         expect(body.msg).toEqual('invalid input syntax');
       });
 

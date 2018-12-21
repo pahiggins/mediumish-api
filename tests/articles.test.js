@@ -185,10 +185,10 @@ module.exports = () => {
           expect(body.msg).toEqual('body is required');
         });
 
-        test('POST responds with 400 if article_id does not exist', async () => {
+        test('POST responds with 404 if article_id does not exist', async () => {
           const comment = { username: 'butter_bridge', body: 'Sample comment...' };
           const { status, body } = await request(app).post('/api/articles/300/comments').send(comment);
-          expect(status).toEqual(400);
+          expect(status).toEqual(404);
           expect(body.msg).toEqual('invalid input syntax');
         });
 
