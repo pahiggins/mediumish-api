@@ -27,12 +27,11 @@ module.exports = () => {
       expect(type).toEqual('application/json');
     });
 
-    test('POST responds with the added topic if valid and without description', async () => {
+    test('POST responds with 400 if topic is missing description', async () => {
       const topic = { slug: 'comedy' };
       const { status, body, type } = await request(app).post('/api/topics').send(topic);
-      expect(status).toEqual(201);
-      expect(body).toHaveProperty('slug', 'comedy');
-      expect(type).toEqual('application/json');
+      expect(status).toEqual(400);
+      expect(body.msg).toEqual('description is required');
     });
 
     test('POST responds with 400 if topic is missing slug', async () => {
