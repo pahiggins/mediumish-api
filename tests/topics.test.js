@@ -125,7 +125,7 @@ module.exports = () => {
 
       describe('?p', () => {
         test('GET responds with array of articles for a topic using p query', async () => {
-          const { status, body } = await request(app).get('/api/topics/mitch/articles?p=1');
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?p=2');
           expect(status).toEqual(200);
           expect(body).toHaveLength(1);
         });

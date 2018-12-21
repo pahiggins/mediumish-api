@@ -37,7 +37,7 @@ exports.getArticlesByTopic = (req, res, next) => {
   const {
     limit = 10,
     sort_by = 'created_at',
-    p = 0,
+    p = 1,
     sort_ascending = false,
   } = req.query;
 
@@ -51,7 +51,7 @@ exports.getArticlesByTopic = (req, res, next) => {
       'articles.topic',
     )
     .limit(limit)
-    .offset(p * limit)
+    .offset((p - 1) * limit)
     .orderBy((`articles.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .where('topic', '=', topic)
     .count('comments.article_id AS comment_count')

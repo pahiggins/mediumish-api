@@ -117,7 +117,7 @@ module.exports = () => {
 
       describe('?p', () => {
         test('GET responds with an array of articles for a topic using p query', async () => {
-          const { status, body } = await request(app).get('/api/articles?p=1');
+          const { status, body } = await request(app).get('/api/articles?p=2');
           expect(status).toEqual(200);
           expect(body).toHaveLength(2);
         });
@@ -217,7 +217,7 @@ module.exports = () => {
 
         describe('?p', () => {
           test('GET responds with an array of comments for an article using p query', async () => {
-            const { status, body } = await request(app).get('/api/articles/1/comments?p=1');
+            const { status, body } = await request(app).get('/api/articles/1/comments?p=2');
             expect(status).toEqual(200);
             expect(body).toHaveLength(3);
           });

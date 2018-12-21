@@ -5,7 +5,7 @@ exports.getArticles = (req, res, next) => {
   const {
     limit = 10,
     sort_by = 'created_at',
-    p = 0,
+    p = 1,
     sort_ascending = false,
   } = req.query;
 
@@ -20,7 +20,7 @@ exports.getArticles = (req, res, next) => {
       'articles.topic',
     )
     .limit(limit)
-    .offset(p * limit)
+    .offset((p - 1) * limit)
     .orderBy((`articles.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .count('comments.article_id AS comment_count')
     .from('comments')
@@ -110,7 +110,7 @@ exports.getComments = (req, res, next) => {
   const {
     limit = 10,
     sort_by = 'created_at',
-    p = 0,
+    p = 1,
     sort_ascending = false,
   } = req.query;
 
@@ -124,7 +124,7 @@ exports.getComments = (req, res, next) => {
     )
     .where('comments.article_id', '=', article_id)
     .limit(limit)
-    .offset(p * limit)
+    .offset((p - 1) * limit)
     .orderBy((`comments.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .from('comments')
     .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
