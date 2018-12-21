@@ -32,7 +32,7 @@ exports.addTopic = (req, res, next) => {
     .catch(next);
 };
 
-exports.getArticlesByTopic = (req, res, next) => {
+exports.getArticles = (req, res, next) => {
   const { topic } = req.params;
   const {
     limit = 10,
@@ -73,7 +73,7 @@ exports.getArticlesByTopic = (req, res, next) => {
     .catch(next);
 };
 
-exports.addArticleByTopic = (req, res, next) => {
+exports.addArticle = (req, res, next) => {
   const { topic } = req.params;
   const newArticle = {
     title: req.body.title,
