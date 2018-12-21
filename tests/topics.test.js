@@ -80,6 +80,13 @@ module.exports = () => {
         expect(body.msg).toEqual('title is required');
       });
 
+      test('POST responds with 400 if article is missing body', async () => {
+        const article = { title: 'Sample title...', username: 'butter_bridge' };
+        const { status, body } = await request(app).post('/api/topics/cats/articles').send(article);
+        expect(status).toEqual(400);
+        expect(body.msg).toEqual('body is required');
+      });
+
       test('POST responds with 400 if article is missing username', async () => {
         const article = { title: 'Sample title...', body: 'This is a body...' };
         const { status, body } = await request(app).post('/api/topics/cats/articles').send(article);
