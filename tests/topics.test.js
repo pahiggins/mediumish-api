@@ -29,7 +29,7 @@ module.exports = () => {
 
     test('POST responds with 400 if topic is missing description', async () => {
       const topic = { slug: 'comedy' };
-      const { status, body, type } = await request(app).post('/api/topics').send(topic);
+      const { status, body } = await request(app).post('/api/topics').send(topic);
       expect(status).toEqual(400);
       expect(body.msg).toEqual('description is required');
     });

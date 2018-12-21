@@ -39,6 +39,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "knex": "^0.15.2",
+    "loglevel": "^1.6.1",
     "pg": "^7.7.1"
   },
   "devDependencies": {

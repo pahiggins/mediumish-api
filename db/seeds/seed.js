@@ -26,5 +26,5 @@ exports.seed = function (knex, Promise) {
 
       return knex('comments').insert(formattedCommentData);
     })
-    .catch(err => console.log(err));
+    .catch();
 };
