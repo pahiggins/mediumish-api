@@ -1,6 +1,6 @@
-# NC Knews
+# NC News
 
-API for use with NC Knews web app.
+API for use with NC News web app.
 
 ## Getting Started
 

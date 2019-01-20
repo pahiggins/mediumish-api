@@ -1,5 +1,5 @@
 {
-  "name": "BE2-NC-Knews",
+  "name": "NC-News-API",
   "version": "1.0.0",
   "description": "## Northcoders News API",
   "main": "server/app.js",
