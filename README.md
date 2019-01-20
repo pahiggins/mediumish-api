@@ -1,6 +1,6 @@
 # NC News
 
-API for use with NC News web app.
+API for use with NC News React app.
 
 ## Getting Started
 
