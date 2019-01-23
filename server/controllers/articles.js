@@ -120,6 +120,7 @@ exports.getComments = (req, res, next) => {
       'comments.votes',
       'comments.created_at',
       'articles.username AS author',
+      'comments.username',
       'comments.body',
     )
     .where('comments.article_id', '=', article_id)
