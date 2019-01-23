@@ -130,7 +130,7 @@ exports.getComments = (req, res, next) => {
     .from('comments')
     .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .then((matchingComments) => {
-      if (matchingComments.length === 0) return Promise.reject({ status: 404, msg: 'article not found' });
+      // if (matchingComments.length === 0) return Promise.reject({ status: 404, msg: 'article not found' });
       res.status(200).send(matchingComments);
     })
     .catch(next);
