@@ -3,7 +3,7 @@ const connection = require('../../db/connection');
 
 exports.getUsers = (req, res, next) => connection('users')
   .select('*')
-  .then(allUsers => res.status(200).send(allUsers))
+  .then(allUsers => res.status(200).send({ users: allUsers }))
   .catch(next);
 
 exports.getUser = (req, res, next) => {
@@ -13,7 +13,7 @@ exports.getUser = (req, res, next) => {
     .where('username', '=', username)
     .then(([matchingUser]) => {
       if (!matchingUser) return Promise.reject({ status: 404, msg: 'user not found' });
-      res.status(200).send(matchingUser);
+      res.status(200).send({ user: matchingUser });
     })
     .catch(next);
 };
