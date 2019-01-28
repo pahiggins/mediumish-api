@@ -22,7 +22,7 @@ exports.getArticles = (req, res, next) => {
     .limit(limit)
     .offset((p - 1) * limit)
     .count('comments.article_id AS comment_count')
-    .orderBy((`articles.${sort_by}` || 'comment_count'), sort_ascending ? 'asc' : 'desc')
+    .orderBy((`articles.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .from('comments')
     .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .groupBy(
