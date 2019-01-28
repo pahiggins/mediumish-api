@@ -3,7 +3,10 @@ const connection = require('../../db/connection');
 
 exports.getTopics = (req, res, next) => connection('topics')
   .select('*')
-  .then(allTopics => res.status(200).send({ topics: allTopics }))
+  .then((allTopics) => {
+    if (allTopics.length === 0) return Promise.reject({ status: 404, msg: 'topic not found' });
+    res.status(200).send({ topics: allTopics });
+  })
   .catch(next);
 
 exports.addTopic = (req, res, next) => {
@@ -27,6 +30,7 @@ exports.addTopic = (req, res, next) => {
     .insert(newTopic)
     .returning(['slug', 'description'])
     .then(([addedTopic]) => {
+      if (!addedTopic) return Promise.reject({ status: 404, msg: 'topic not found' });
       res.status(201).send({ topic: addedTopic });
     })
     .catch(next);
@@ -104,6 +108,7 @@ exports.addArticle = (req, res, next) => {
     .insert(newArticle)
     .returning('*')
     .then(([addedArticle]) => {
+      if (!addedArticle) return Promise.reject({ status: 404, msg: 'article not found' });
       res.status(201).send({ article: addedArticle });
     })
     .catch(next);
