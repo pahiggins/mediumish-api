@@ -37,7 +37,7 @@ exports.getArticles = (req, res, next) => {
     )
     .then((matchingArticles) => {
       if (matchingArticles.length === 0) return Promise.reject({ status: 404, msg: 'article not found' });
-      res.status(200).send(matchingArticles);
+      res.status(200).send({ articles: matchingArticles });
     })
     .catch(next);
 };
