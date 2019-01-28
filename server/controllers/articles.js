@@ -24,7 +24,7 @@ exports.getArticles = (req, res, next) => {
     .count('comments.article_id AS comment_count')
     .orderBy((`articles.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .from('comments')
-    .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .groupBy(
       'articles.username',
       'articles.title',
