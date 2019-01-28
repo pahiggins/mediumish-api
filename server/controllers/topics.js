@@ -57,11 +57,11 @@ exports.getArticles = (req, res, next) => {
     )
     .limit(limit)
     .offset((p - 1) * limit)
-    .orderBy((`articles.${sort_by}`), sort_ascending ? 'asc' : 'desc')
-    .where('topic', '=', topic)
     .count('comments.article_id AS comment_count')
+    .orderBy(`${sort_by}`, sort_ascending ? 'asc' : 'desc')
+    .where('topic', '=', topic)
     .from('comments')
-    .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .groupBy(
       'articles.username',
       'articles.title',
