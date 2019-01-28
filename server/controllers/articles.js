@@ -71,7 +71,7 @@ exports.getArticle = (req, res, next) => {
     )
     .then(([matchingArticle]) => {
       if (!matchingArticle) return Promise.reject({ status: 404, msg: 'article not found' });
-      res.status(200).send(matchingArticle);
+      res.status(200).send({ article: matchingArticle });
     })
     .catch(next);
 };
@@ -90,7 +90,7 @@ exports.updateArticle = (req, res, next) => {
     .returning('*')
     .then(([updatedArticle]) => {
       if (!updatedArticle) return Promise.reject({ status: 404, msg: 'article not found' });
-      res.status(200).send(updatedArticle);
+      res.status(200).send({ article: updatedArticle });
     })
     .catch(next);
 };
@@ -138,7 +138,7 @@ exports.getComments = (req, res, next) => {
           status: 404, msg: 'comment not found',
         });
       }
-      res.status(200).send(matchingComments);
+      res.status(200).send({ comments: matchingComments });
     })
     .catch(next);
 };
@@ -167,7 +167,7 @@ exports.addComment = (req, res, next) => {
     .returning('*')
     .then(([addedComment]) => {
       if (!addedComment) return Promise.reject({ status: 404, msg: 'article not found' });
-      res.status(201).send(addedComment);
+      res.status(201).send({ comment: addedComment });
     })
     .catch(next);
 };
@@ -186,7 +186,7 @@ exports.updateComment = (req, res, next) => {
     .returning('*')
     .then(([updatedComment]) => {
       if (!updatedComment) return Promise.reject({ status: 404, msg: 'comment not found' });
-      res.status(200).send(updatedComment);
+      res.status(200).send({ comment: updatedComment });
     })
     .catch(next);
 };
