@@ -7,8 +7,8 @@ module.exports = () => {
     test('GET responds with an array of articles', async () => {
       const { status, body, type } = await request(app).get('/api/articles');
       expect(status).toEqual(200);
-      expect(body).toHaveLength(10);
-      expect(body[0]).toHaveProperty('comment_count', '13');
+      expect(body.articles).toHaveLength(4);
+      expect(body.articles[0]).toHaveProperty('comment_count', '13');
       expect(type).toEqual('application/json');
     });
 
@@ -22,13 +22,13 @@ module.exports = () => {
       test('GET responds with an article object if valid and existing article_id', async () => {
         const { status, body } = await request(app).get('/api/articles/3');
         expect(status).toEqual(200);
-        expect(body).toHaveProperty('article_id', 3);
-        expect(body).toHaveProperty('author', 'icellusedkars');
-        expect(body).toHaveProperty('title', 'Eight pug gifs that remind me of mitch');
-        expect(body).toHaveProperty('votes', 0);
-        expect(body).toHaveProperty('body', 'some gifs');
-        expect(body).toHaveProperty('comment_count', '0');
-        expect(body).toHaveProperty('topic', 'mitch');
+        expect(body.article).toHaveProperty('article_id', 3);
+        expect(body.article).toHaveProperty('author', 'icellusedkars');
+        expect(body.article).toHaveProperty('title', 'Eight pug gifs that remind me of mitch');
+        expect(body.article).toHaveProperty('votes', 0);
+        expect(body.article).toHaveProperty('body', 'some gifs');
+        expect(body.article).toHaveProperty('comment_count', '0');
+        expect(body.article).toHaveProperty('topic', 'mitch');
       });
 
       test('GET responds with 404 if article_id does not exist', async () => {
@@ -46,15 +46,15 @@ module.exports = () => {
       test('PATCH responds with updated article with increased votes', async () => {
         const { status, body } = await request(app).patch('/api/articles/1').send({ inc_votes: 2 });
         expect(status).toEqual(200);
-        expect(body).toHaveProperty('article_id', 1);
-        expect(body).toHaveProperty('votes', 102);
+        expect(body.article).toHaveProperty('article_id', 1);
+        expect(body.article).toHaveProperty('votes', 102);
       });
 
       test('PATCH responds with updated article with decreased votes', async () => {
         const { status, body } = await request(app).patch('/api/articles/1').send({ inc_votes: -2 });
         expect(status).toEqual(200);
-        expect(body).toHaveProperty('article_id', 1);
-        expect(body).toHaveProperty('votes', 98);
+        expect(body.article).toHaveProperty('article_id', 1);
+        expect(body.article).toHaveProperty('votes', 98);
       });
 
       test('PATCH responds with 404 if article_id does not exist', async () => {
@@ -103,7 +103,7 @@ module.exports = () => {
         test('GET responds with an array of articles for a topic using limit query', async () => {
           const { status, body } = await request(app).get('/api/articles?limit=3');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(3);
+          expect(body.articles).toHaveLength(3);
         });
       });
 
@@ -111,7 +111,7 @@ module.exports = () => {
         test('GET responds with an array of articles for a topic using sort_by query', async () => {
           const { status, body } = await request(app).get('/api/articles?sort_by=article_id');
           expect(status).toEqual(200);
-          expect(body[0]).toHaveProperty('article_id', 12);
+          expect(body.articles[0]).toHaveProperty('article_id', 12);
         });
       });
 
@@ -119,7 +119,7 @@ module.exports = () => {
         test('GET responds with an array of articles for a topic using p query', async () => {
           const { status, body } = await request(app).get('/api/articles?p=2');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(2);
+          expect(body.articles).toHaveLength(2);
         });
       });
 
@@ -127,7 +127,7 @@ module.exports = () => {
         test('GET responds with an array of articles for a topic using sort_ascending query', async () => {
           const { status, body } = await request(app).get('/api/articles?sort_ascending=true');
           expect(status).toEqual(200);
-          expect(body[0]).toHaveProperty('article_id', 12);
+          expect(body.articles[0]).toHaveProperty('article_id', 12);
         });
       });
 
@@ -136,7 +136,7 @@ module.exports = () => {
           const { status, body } = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
           expect(status).toEqual(200);
           expect(body).toHaveLength(3);
-          expect(body[0]).toHaveProperty('title', 'Moustache');
+          expect(body.articles[0]).toHaveProperty('title', 'Moustache');
         });
       });
 
@@ -144,15 +144,15 @@ module.exports = () => {
         test('GET responds with an array of comments if valid and existing article_id', async () => {
           const { status, body, type } = await request(app).get('/api/articles/1/comments');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(10);
-          expect(body[0]).toHaveProperty('comment_id', 2);
+          expect(body.comments).toHaveLength(10);
+          expect(body.comments[0]).toHaveProperty('comment_id', 2);
           expect(type).toEqual('application/json');
         });
 
         test('GET responds with 404 if article_id does not exist', async () => {
           const { status, body } = await request(app).get('/api/articles/300/comments');
           expect(status).toEqual(404);
-          expect(body.msg).toEqual('article not found');
+          expect(body.msg).toEqual('comment not found');
         });
 
         test('GET responds with 400 if article_id is not valid', async () => {
@@ -165,9 +165,9 @@ module.exports = () => {
           const comment = { username: 'butter_bridge', body: 'Sample comment...' };
           const { status, body, type } = await request(app).post('/api/articles/1/comments').send(comment);
           expect(status).toEqual(201);
-          expect(body).toHaveProperty('username', comment.username);
-          expect(body).toHaveProperty('body', comment.body);
-          expect(body).toHaveProperty('comment_id', 19);
+          expect(body.comment).toHaveProperty('username', comment.username);
+          expect(body.comment).toHaveProperty('body', comment.body);
+          expect(body.comment).toHaveProperty('comment_id', 19);
           expect(type).toEqual('application/json');
         });
 
@@ -203,7 +203,7 @@ module.exports = () => {
           test('GET responds with an array of comments for an article using limit query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?limit=3');
             expect(status).toEqual(200);
-            expect(body).toHaveLength(3);
+            expect(body.comments).toHaveLength(3);
           });
         });
 
@@ -211,7 +211,7 @@ module.exports = () => {
           test('GET responds with an array of comments for an article using sort_by query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?sort_by=comment_id');
             expect(status).toEqual(200);
-            expect(body[0]).toHaveProperty('comment_id', 18);
+            expect(body.comments[0]).toHaveProperty('comment_id', 18);
           });
         });
 
@@ -219,7 +219,7 @@ module.exports = () => {
           test('GET responds with an array of comments for an article using p query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?p=2');
             expect(status).toEqual(200);
-            expect(body).toHaveLength(3);
+            expect(body.comments).toHaveLength(3);
           });
         });
 
@@ -227,7 +227,7 @@ module.exports = () => {
           test('GET responds with an array of comments for an article using sort_ascending query', async () => {
             const { status, body } = await request(app).get('/api/articles/1/comments?sort_ascending=true');
             expect(status).toEqual(200);
-            expect(body[0]).toHaveProperty('comment_id', 18);
+            expect(body.comments[0]).toHaveProperty('comment_id', 18);
           });
         });
 
@@ -235,8 +235,8 @@ module.exports = () => {
           test('GET responds with an array of comments for an article using multiple queries', async () => {
             const { status, body } = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
             expect(status).toEqual(200);
-            expect(body).toHaveLength(3);
-            expect(body[0]).toHaveProperty('title', 'Moustache');
+            expect(body.comments).toHaveLength(3);
+            expect(body.comments[0]).toHaveProperty('title', 'Moustache');
           });
         });
 
@@ -244,15 +244,15 @@ module.exports = () => {
           test('PATCH responds with an updated comment object with increased votes', async () => {
             const { status, body } = await request(app).patch('/api/articles/1/comments/3').send({ inc_votes: 2 });
             expect(status).toEqual(200);
-            expect(body).toHaveProperty('comment_id', 3);
-            expect(body).toHaveProperty('votes', 102);
+            expect(body.comment).toHaveProperty('comment_id', 3);
+            expect(body.comment).toHaveProperty('votes', 102);
           });
 
-          test('PATCH responds with status 200 and updated comment object with decreased votes', async () => {
+          test('PATCH responds with an updated comment object with decreased votes', async () => {
             const { status, body } = await request(app).patch('/api/articles/1/comments/3').send({ inc_votes: -2 });
             expect(status).toEqual(200);
-            expect(body).toHaveProperty('comment_id', 3);
-            expect(body).toHaveProperty('votes', 98);
+            expect(body.comment).toHaveProperty('comment_id', 3);
+            expect(body.comment).toHaveProperty('votes', 98);
           });
 
           test('PATCH responds with 404 if comment_id does not exist', async () => {

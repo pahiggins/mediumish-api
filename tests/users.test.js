@@ -7,8 +7,8 @@ module.exports = () => {
     test('GET responds with an array of users', async () => {
       const { status, body, type } = await request(app).get('/api/users');
       expect(status).toEqual(200);
-      expect(body).toHaveLength(3);
-      expect(body[0]).toHaveProperty('username', 'butter_bridge');
+      expect(body.users).toHaveLength(3);
+      expect(body.users[0]).toHaveProperty('username', 'butter_bridge');
       expect(type).toEqual('application/json');
     });
 
@@ -22,9 +22,9 @@ module.exports = () => {
       test('GET responds with a user object if valid and existing username', async () => {
         const { status, body, type } = await request(app).get('/api/users/butter_bridge');
         expect(status).toEqual(200);
-        expect(body).toHaveProperty('username', 'butter_bridge');
-        expect(body).toHaveProperty('name', 'jonny');
-        expect(body).toHaveProperty('avatar_url', 'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg');
+        expect(body.user).toHaveProperty('username', 'butter_bridge');
+        expect(body.user).toHaveProperty('name', 'jonny');
+        expect(body.user).toHaveProperty('avatar_url', 'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg');
         expect(type).toEqual('application/json');
       });
 

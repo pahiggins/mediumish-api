@@ -7,8 +7,8 @@ module.exports = () => {
     test('GET responds with an array of topics', async () => {
       const { status, body, type } = await request(app).get('/api/topics');
       expect(status).toEqual(200);
-      expect(body).toHaveLength(2);
-      expect(body[0]).toHaveProperty('slug', 'mitch');
+      expect(body.topics).toHaveLength(2);
+      expect(body.topics[0]).toHaveProperty('slug', 'mitch');
       expect(type).toEqual('application/json');
     });
 
@@ -22,8 +22,8 @@ module.exports = () => {
       const topic = { description: 'This is a description...', slug: 'comedy' };
       const { status, body, type } = await request(app).post('/api/topics').send(topic);
       expect(status).toEqual(201);
-      expect(body).toHaveProperty('description', 'This is a description...');
-      expect(body).toHaveProperty('slug', 'comedy');
+      expect(body.topic).toHaveProperty('description', 'This is a description...');
+      expect(body.topic).toHaveProperty('slug', 'comedy');
       expect(type).toEqual('application/json');
     });
 
@@ -52,9 +52,9 @@ module.exports = () => {
       test('GET responds with an array of articles for an existing topic', async () => {
         const { status, body } = await request(app).get('/api/topics/cats/articles');
         expect(status).toEqual(200);
-        expect(body).toHaveLength(1);
-        expect(body[0]).toHaveProperty('title', 'UNCOVERED: catspiracy to bring down democracy');
-        expect(body[0]).toHaveProperty('comment_count', '2');
+        expect(body.articles).toHaveLength(1);
+        expect(body.articles[0]).toHaveProperty('title', 'UNCOVERED: catspiracy to bring down democracy');
+        expect(body.articles[0]).toHaveProperty('comment_count', '2');
       });
 
       test('GET responds with 404 if topic does not exist', async () => {
@@ -67,9 +67,9 @@ module.exports = () => {
         const article = { title: 'Sample title...', body: 'Sample body...', username: 'butter_bridge' };
         const { status, body, type } = await request(app).post('/api/topics/cats/articles').send(article);
         expect(status).toEqual(201);
-        expect(body).toHaveProperty('title', 'Sample title...');
-        expect(body).toHaveProperty('body', 'Sample body...');
-        expect(body).toHaveProperty('username', 'butter_bridge');
+        expect(body.article).toHaveProperty('title', 'Sample title...');
+        expect(body.article).toHaveProperty('body', 'Sample body...');
+        expect(body.article).toHaveProperty('username', 'butter_bridge');
         expect(type).toEqual('application/json');
       });
 
@@ -110,15 +110,16 @@ module.exports = () => {
 
       describe('?limit', () => {
         test('GET responds with array of articles for a topic using limit query', async () => {
-          const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=3');
+          const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=4');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(3);
+          expect(body.articles).toHaveLength(4);
         });
 
         test('GET responds with array of all articles for a topic using invalid limit query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=text');
+          console.log(body);
           expect(status).toEqual(200);
-          expect(body).toHaveLength(11);
+          expect(body.articles).toHaveLength(11);
         });
       });
 
@@ -126,7 +127,7 @@ module.exports = () => {
         test('GET responds with array of articles for a topic using sort_by query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_by=article_id');
           expect(status).toEqual(200);
-          expect(body[0]).toHaveProperty('article_id', 12);
+          expect(body.articles[0]).toHaveProperty('article_id', 12);
         });
 
         test('GET responds with 400 for a topic using invalid sort_by query', async () => {
@@ -140,13 +141,13 @@ module.exports = () => {
         test('GET responds with array of articles for a topic using p query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?p=2');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(1);
+          expect(body.articles).toHaveLength(1);
         });
 
         test('GET responds with array of all articles for a topic using invalid p query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?p=text');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(10);
+          expect(body.articles).toHaveLength(10);
         });
 
         test('GET responds with 404 for a topic using unavailable p query', async () => {
@@ -160,13 +161,13 @@ module.exports = () => {
         test('GET responds with array of articles for a topic using sort_ascending query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_ascending=true');
           expect(status).toEqual(200);
-          expect(body[0]).toHaveProperty('article_id', 12);
+          expect(body.articles[0]).toHaveProperty('article_id', 12);
         });
 
         test('GET responds with array of all articles for a topic using invalid sort_ascending query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?sort_ascending=text');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(10);
+          expect(body.articles).toHaveLength(10);
         });
       });
 
@@ -174,8 +175,8 @@ module.exports = () => {
         test('GET responds with array of articles for a topic using multiple queries', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=3&&sort_by=article_id');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(3);
-          expect(body[0]).toHaveProperty('title', 'Moustache');
+          expect(body.articles).toHaveLength(3);
+          expect(body.articles[0]).toHaveProperty('title', 'Moustache');
         });
       });
     });

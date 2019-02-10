@@ -45,6 +45,8 @@ exports.getArticles = (req, res, next) => {
     sort_ascending = false,
   } = req.query;
 
+  console.log('Limit', limit);
+
   return connection
     .select(
       'articles.username AS author',
