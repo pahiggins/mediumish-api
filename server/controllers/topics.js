@@ -45,8 +45,6 @@ exports.getArticles = (req, res, next) => {
     sort_ascending = false,
   } = req.query;
 
-  console.log('Limit', limit);
-
   return connection
     .select(
       'articles.username AS author',
@@ -63,7 +61,7 @@ exports.getArticles = (req, res, next) => {
     .orderBy(`${sort_by}`, sort_ascending ? 'asc' : 'desc')
     .where('topic', '=', topic)
     .from('comments')
-    .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .groupBy(
       'articles.username',
       'articles.title',

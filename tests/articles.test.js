@@ -7,7 +7,7 @@ module.exports = () => {
     test('GET responds with an array of articles', async () => {
       const { status, body, type } = await request(app).get('/api/articles');
       expect(status).toEqual(200);
-      expect(body.articles).toHaveLength(4);
+      expect(body.articles).toHaveLength(10);
       expect(body.articles[0]).toHaveProperty('comment_count', '13');
       expect(type).toEqual('application/json');
     });
@@ -135,7 +135,7 @@ module.exports = () => {
         test('GET responds with an array of articles for a topic using multiple queries', async () => {
           const { status, body } = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
           expect(status).toEqual(200);
-          expect(body).toHaveLength(3);
+          expect(body.articles).toHaveLength(3);
           expect(body.articles[0]).toHaveProperty('title', 'Moustache');
         });
       });
@@ -233,10 +233,10 @@ module.exports = () => {
 
         describe('?limit&&sort_by&&p&&sort_ascending', () => {
           test('GET responds with an array of comments for an article using multiple queries', async () => {
-            const { status, body } = await request(app).get('/api/articles?limit=3&&sort_by=article_id');
+            const { status, body } = await request(app).get('/api/articles/1/comments?limit=3&&sort_by=article_id');
             expect(status).toEqual(200);
             expect(body.comments).toHaveLength(3);
-            expect(body.comments[0]).toHaveProperty('title', 'Moustache');
+            expect(body.comments[0]).toHaveProperty('author', 'butter_bridge');
           });
         });
 

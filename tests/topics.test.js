@@ -117,7 +117,6 @@ module.exports = () => {
 
         test('GET responds with array of all articles for a topic using invalid limit query', async () => {
           const { status, body } = await request(app).get('/api/topics/mitch/articles?limit=text');
-          console.log(body);
           expect(status).toEqual(200);
           expect(body.articles).toHaveLength(11);
         });

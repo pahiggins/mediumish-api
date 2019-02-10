@@ -24,7 +24,7 @@ exports.getArticles = (req, res, next) => {
     .count('comments.article_id AS comment_count')
     .orderBy(`${sort_by}`, sort_ascending ? 'asc' : 'desc')
     .from('comments')
-    .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .groupBy(
       'articles.username',
       'articles.title',
@@ -131,7 +131,7 @@ exports.getComments = (req, res, next) => {
     .offset((p - 1) * limit)
     .orderBy((`comments.${sort_by}`), sort_ascending ? 'asc' : 'desc')
     .from('comments')
-    .leftJoin('articles', 'articles.article_id', '=', 'comments.article_id')
+    .rightJoin('articles', 'articles.article_id', '=', 'comments.article_id')
     .then((matchingComments) => {
       if (matchingComments.length === 0) {
         return Promise.reject({
