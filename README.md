@@ -1,4 +1,4 @@
-# NC News
+# Mediumish API
 
 API for use with [Mediumish](https://github.com/pahiggins/mediumish) React app.
 
