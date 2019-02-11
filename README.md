@@ -1,16 +1,16 @@
 # NC News
 
-API for use with NC News React app.
+API for use with [Mediumish](https://github.com/pahiggins/mediumish) React app.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See 'Deployment' for notes on how to deploy the project on a live server.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 In your terminal, run the following commands from the project root:
 
 ```
-git clone https://github.com/pahiggins/BE2-NC-Knews.git
-cd BE2-NC-Knews
+git clone https://github.com/pahiggins/mediumish-api.git
+cd mediumish-api
 npm install
 ```
 
@@ -53,10 +53,6 @@ npm run create:db
 npm run seed:run:test
 npm test
 ```
-
-## Deployment
-
-Additional notes about how to deploy this on a live server.
 
 ## Built With
 
